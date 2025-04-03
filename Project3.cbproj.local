@@ -2,11 +2,11 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>1899.12.30 00:00:00.000.561,=C:\Users\student\Documents\Embarcadero\Studio\Projects\Project3PCH1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.359,C:\Users\student\Documents\Embarcadero\Studio\Projects\Project3PCH1.h=D:\теорвер Юдина\Муртазина\шифрование\Project3PCH1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.395,C:\Users\student\Documents\Embarcadero\Studio\Projects\Project3.cbproj=D:\теорвер Юдина\Муртазина\шифрование\Project3.cbproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.373,C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.cpp=D:\теорвер Юдина\Муртазина\шифрование\Unit2.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.373,C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.h=D:\теорвер Юдина\Муртазина\шифрование\Unit2.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.373,C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.dfm=D:\теорвер Юдина\Муртазина\шифрование\Unit2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.373,D:\теорвер Юдина\Муртазина\шифрование\Unit2.dfm=C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.359,D:\теорвер Юдина\Муртазина\шифрование\Project3PCH1.h=C:\Users\student\Documents\Embarcadero\Studio\Projects\Project3PCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.373,D:\теорвер Юдина\Муртазина\шифрование\Unit2.h=C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.395,D:\теорвер Юдина\Муртазина\шифрование\Project3.cbproj=C:\Users\student\Documents\Embarcadero\Studio\Projects\Project3.cbproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.963,=C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.373,D:\теорвер Юдина\Муртазина\шифрование\Unit2.cpp=C:\Users\student\Documents\Embarcadero\Studio\Projects\Unit2.cpp</Transaction>
   </Transactions>
 </BorlandProject>

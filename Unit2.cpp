@@ -147,7 +147,6 @@ void __fastcall TForm2::Memo1Change(TObject *Sender)
 		}
     }
     memo->Text = text;
-    memo->SelStart = memo->Text.Length();
 }
 //---------------------------------------------------------------------------
 

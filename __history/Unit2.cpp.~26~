@@ -15,7 +15,6 @@ int Encrypt(int t, int a, int b) {
 
 int Decrypt(int m, int a, int b) {
 	  int a_inv = 0;
-	  // Найти обратный элемент a по модулю 33
 	  for (int i = 1; i < 33; i++) {
 		if ((a * i) % 33 == 1) {
 		  a_inv = i;
@@ -24,13 +23,11 @@ int Decrypt(int m, int a, int b) {
 	  }
 
 	  if (a_inv == 0) {
-		// Обратный элемент не найден, дешифрование невозможно
-		return -1; // Или другое значение ошибки
+		return -1;
 	  }
 
 	int t = ((m - b) * a_inv) % 33;
 
-	  // Убедиться, что результат неотрицательный
 	  if (t < 0) {
 		t += 33;
 	  }
@@ -67,12 +64,7 @@ int a, b;
 	String encrypted = "";
 
 	if (input.IsEmpty()) {
-		ShowMessage("Введите сообщение для шифрования.");
-		return;
-	}
-
-	if (!IsValidKey(Memo1->Text) || !TryStrToInt(Edit1->Text, a)) {
-		ShowMessage("Разрешено вводить только заглавные и строчные буквы русского алфавита и пробел");
+		ShowMessage("Нет сообщения для дешифрования");
 		return;
 	}
 
@@ -106,7 +98,7 @@ void __fastcall TForm2::Button2Click(TObject *Sender)
         return;
 	}
 
-  String input = Memo2->Lines->Text;
+	String input = Memo2->Lines->Text;
     String decrypted = "";
 
     if (input.IsEmpty()) {
@@ -117,19 +109,19 @@ void __fastcall TForm2::Button2Click(TObject *Sender)
     for (int i = 1; i <= input.Length(); i++) {
         wchar_t ch = input[i];
 		if (ch >= L'А' && ch <= L'Я') {
-            int c = ch - L'А'; // Номер зашифрованной буквы
-            int t = Decrypt(c, a, b);
-	  if (t == -1) {
-          ShowMessage("Дешифрование невозможно: нет обратного элемента для 'a'.");
-          return;
-      }
-            decrypted += (wchar_t)(t + L'А');
+            int m = ch - L'А'; // Номер зашифрованной буквы
+            int t = Decrypt(m, a, b);
+			if (t == -1) {
+				ShowMessage("Дешифрование невозможно: нет обратного элемента.");
+				return;
+			}
+			decrypted += (wchar_t)(t + L'А');
 		}
 		else if (ch >= L'а' && ch <= L'я') {
             int m = ch - L'а'; // Номер зашифрованной буквы
             int t = Decrypt(m, a, b);
             if (t == -1) {
-                ShowMessage("Дешифрование невозможно: нет обратного элемента для 'a'.");
+                ShowMessage("Дешифрование невозможно: нет обратного элемента.");
                 return;
             }
             decrypted += (wchar_t)(t + L'а');
@@ -142,4 +134,37 @@ void __fastcall TForm2::Button2Click(TObject *Sender)
   Memo3->Lines->Text = decrypted;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TForm2::Memo1Change(TObject *Sender)
+{
+    TMemo* memo = dynamic_cast<TMemo*>(Sender);
+    String text = memo->Text;
+	for (int i = 1; i <= text.Length(); ++i) {
+        wchar_t ch = text[i];
+		if (!((ch >= L'а' && ch <= L'я') || (ch >= L'А' && ch <= L'Я')) && ch != ' ') {
+			text.Delete(i, 1);
+		   --i;
+		}
+    }
+    memo->Text = text;
+    memo->SelStart = memo->Text.Length();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Edit1KeyPress(TObject *Sender, System::WideChar &Key)
+{
+	if (!isdigit(Key)&& Key != 8) {
+		Key = 0;
+	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Edit2KeyPress(TObject *Sender, System::WideChar &Key)
+{
+  if (!isdigit(Key)&& Key != 8) {
+    Key = 0;
+  }
+}
+//---------------------------------------------------------------------------
+
 
