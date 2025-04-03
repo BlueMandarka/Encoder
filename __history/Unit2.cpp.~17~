@@ -1,0 +1,156 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <cctype>
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm2 *Form2;
+
+int Encrypt(int t, int a, int b) {
+	return (a * t + b) % 33;
+}
+
+int Decrypt(int m, int a, int b) {
+	  int a_inv = 0;
+	  // Найти обратный элемент a по модулю 33
+	  for (int i = 1; i < 33; i++) {
+		if ((a * i) % 33 == 1) {
+		  a_inv = i;
+		  break;
+		}
+	  }
+
+	  if (a_inv == 0) {
+		// Обратный элемент не найден, дешифрование невозможно
+		return -1; // Или другое значение ошибки
+	  }
+
+	int t = ((m - b) * a_inv) % 33;
+
+	  // Убедиться, что результат неотрицательный
+	  if (t < 0) {
+		t += 33;
+	  }
+
+	  return t;
+}
+
+bool IsValidKey(const String& key) {
+	// Проверка, что строка не пустая и состоит только из цифр
+	if (key.IsEmpty()) return false;
+	for (int i = 1; i < key.Length(); i++) {
+		if (!isdigit(key[i])) {
+            return false;
+		}
+	}
+	return true;
+}
+//---------------------------------------------------------------------------
+__fastcall TForm2::TForm2(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm2::Button1Click(TObject *Sender)
+{
+int a, b;
+	if (!IsValidKey(Edit1->Text) || !IsValidKey(Edit2->Text) ||
+		!TryStrToInt(Edit1->Text, a) || !TryStrToInt(Edit2->Text, b)) {
+		ShowMessage("Введите корректные значения для ключей a и b.");
+		return;
+	}
+
+	String input = Memo1->Lines->Text;
+	String encrypted = "";
+
+	if (input.IsEmpty()) {
+		ShowMessage("Введите сообщение для шифрования.");
+		return;
+	}
+
+	for (int i = 1; i <= input.Length(); i++) {
+		wchar_t ch = input[i];
+		if (ch >= L'А' && ch <= L'Я') {
+			int t = ch - L'А'; // Номер буквы
+			int c = Encrypt(t, a, b);
+
+			encrypted += (wchar_t)(c + L'А');
+		}
+		else if (ch >= L'а' && ch <= L'я') {
+			int t = ch - L'а'; // Номер буквы
+			int c = Encrypt(t, a, b);
+
+			encrypted += (wchar_t)(c + L'а');
+		}
+		else {
+			encrypted += ch; // Не шифровать символы вне алфавита
+		}
+	}
+	Memo2->Lines->Text = encrypted;
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm2::Button2Click(TObject *Sender)
+{
+ int a, b;
+	if (!IsValidKey(Edit1->Text) || !IsValidKey(Edit2->Text) ||
+  		!TryStrToInt(Edit1->Text, a) || !TryStrToInt(Edit2->Text, b)) {
+        ShowMessage("Введите корректные значения для ключей a и b.");
+        return;
+	}
+
+  String input = Memo2->Lines->Text;
+    String decrypted = "";
+
+    if (input.IsEmpty()) {
+        ShowMessage("Введите сообщение для дешифрования.");
+        return;
+    }
+
+    for (int i = 1; i <= input.Length(); i++) {
+        wchar_t ch = input[i];
+		if (ch >= L'А' && ch <= L'Я') {
+            int c = ch - L'А'; // Номер зашифрованной буквы
+            int t = Decrypt(c, a, b);
+	  if (t == -1) {
+          ShowMessage("Дешифрование невозможно: нет обратного элемента для 'a'.");
+          return;
+      }
+            decrypted += (wchar_t)(t + L'А');
+		}
+		else if (ch >= L'а' && ch <= L'я') {
+            int m = ch - L'а'; // Номер зашифрованной буквы
+            int t = Decrypt(m, a, b);
+            if (t == -1) {
+                ShowMessage("Дешифрование невозможно: нет обратного элемента для 'a'.");
+                return;
+            }
+            decrypted += (wchar_t)(t + L'а');
+        }
+        else {
+            decrypted += ch; // Не дешифровать символы вне алфавита
+        }
+    }
+
+  Memo3->Lines->Text = decrypted;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm2::Memo1Change(TObject *Sender)
+{
+    TMemo* memo = dynamic_cast<TMemo*>(Sender);
+    String text = memo->Text;
+    for (int i = 1; i <= text.Length(); ++i) {
+        wchar_t ch = text[i];
+        if (!isalpha(ch) && ch != ' ') {
+            text.Delete(i, 1);
+            --i;
+        }
+    }
+    memo->Text = text;
+    memo->SelStart = memo->Text.Length();
+}
+//---------------------------------------------------------------------------
+
